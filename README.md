@@ -87,12 +87,12 @@ general is somewhat divided on the meaning of the concept of privacy
 in ruby. For some, especially those who come from Java, C++, VB, or
 some other language that enforces encapsulation with privacy, ruby's
 ability to get around privacy means that encapsulation cannot be
-enforced. Most of us (I count myself in this camp) have discarded the
-use of privacy in ruby altogether, as if it were nothing more than a
-half-hearted nod to other languages' encapsulation practices. Make
-everything public, we say; since everything's ultimately public
-anyway, using the private keyword is merely a speedbump which adds no
-security but does add hassle and headache.
+enforced. Most of us (I have counted myself in this camp until now)
+have discarded the use of privacy in ruby altogether, as if it were
+nothing more than a half-hearted nod to other languages' encapsulation
+practices. Make everything public, we say; since everything's
+ultimately public anyway, using the private keyword is merely a
+speedbump which adds no security but does add hassle and headache.
 
 I am becoming more and more aware of a number of rubyists who consider
 the use of private and protected methods in ruby to be a useful way to
@@ -107,7 +107,22 @@ maintainers of the code, meaning that a maintainer will understand the
 intent of the privacy, and be less likely to *accidentally* create an
 external dependency on on a method that should have been kept private.
 
-I am becoming swayed by this second way of thinking, but I find that
+Another way of looking at this difference of opinion is that the old
+way of thinking is that `private` is there to protect my code from
+your prying eyes, which implies that I think I am smarter than every
+programmer ever, even all the ones who come from the future. It also
+means, at least in ruby, that I think hiding stuff inside a wet paper
+bag is a pretty good way of securing such code from you future
+programmers. This new way of thinking admits to the wet paper bag, but
+more importantly it reverses the direction of the protection: it is
+only a speedbump, but it is there to protect YOU, a smart future
+programmer, from code that I, a programmer from the past who knows he
+will never be as dumb as he is right now, wrote and got working but
+it's volatile and dangerous to depend upon. You may figure out a way
+to use that code safely, and if you do, then by all means cut through
+that paper bag.
+
+I have become swayed by this second way of thinking, but I find that
 it falls short in one key area: accessors. It is easy to create a
 private method in ruby, but creating a private accessor method is
 actually a bit tortuous. As a result, I see programmers who strongly
