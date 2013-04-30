@@ -59,7 +59,9 @@ classes able to have protected and private accessors.
 
 The '/include' form of this gem is a ruby-wide monkeypatch. Please
 remember that it's perfectly fine to use it this way in your own
-applications, but quite rude to use it this way in a library.
+applications, but quite rude to use it this way in a library. People
+who use your library would then be infected by this monkeypatch as
+well. Not cool.
 
 If you use scoped accessors in a gem or library of your own, please
 consider using the non-include version, or, in Ruby 2.0, use
@@ -88,8 +90,8 @@ ability to get around privacy means that encapsulation cannot be
 enforced. Most of us (I count myself in this camp) have discarded the
 use of privacy in ruby altogether, as if it were nothing more than a
 half-hearted nod to other languages' encapsulation practices. Make
-everything public, since everything's ultimately public anyway, we
-say; using the private keyword is merely a speedbump which adds no
+everything public, we say; since everything's ultimately public
+anyway, using the private keyword is merely a speedbump which adds no
 security but does add hassle and headache.
 
 I am becoming more and more aware of a number of rubyists who consider
@@ -105,23 +107,27 @@ maintainers of the code, meaning that a maintainer will understand the
 intent of the privacy, and be less likely to *accidentally* create an
 external dependency on on a method that should have been kept private.
 
-I am becoming more and more swayed by this second way of thinking, but
-I find that it falls short in one key area: accessors. It is easy to
-create a private method in ruby, but creating a private accessor
-method is actually a bit tortuous. As a result, I see programmers who
-strongly believe in using privacy to communicate undependable
-interfaces frequently making use of either instance variables or
-public accessors for their private variables. These variables are not
-dependable, at least from a "stable interface" standpoint, so both
-solutions offer an unfavorable tradeoff. While instance variables
-communicate privacy, they force the object to depend on its own
-undependable internal interface. Meanwhile, public accessors allow the
-class to isolate itself from its undependable interface, but by making
-it public the communication to the maintainer is that other classes
-can and should depend on that undependable interface.
+I am becoming swayed by this second way of thinking, but I find that
+it falls short in one key area: accessors. It is easy to create a
+private method in ruby, but creating a private accessor method is
+actually a bit tortuous. As a result, I see programmers who strongly
+believe in using privacy to communicate undependable interfaces
+frequently making one of two bad tradeoffs: they either use instance
+variables or public accessors for their private variables. These
+variables are not dependable, at least from a "stable interface"
+standpoint, so both solutions are suboptimal. While instance variables
+communicate privacy, they force the class to depend on its own
+undependable internals. Making an accessor allows the class to create
+an internal interface to isolates itself from its own undependable
+internals, but by making it public the communication to the maintainer
+is that other classes can and should depend on that interface.
 
-The reason programmers make this tradeoff is that there doesn't seem
-to be an easy, clean, *elegant* way to create private and protected
-accessors in ruby. My goal with this gem, then, is to create such a
-way, so that those who wish to communicate "this variable is
-undependable and it should be kept isolated for now" can do so easily.
+What is needed is a clean, easy, *elegant* way to create private and
+protected accessors, so that classes can create internal interfaces
+to their instance variables, reducing their exposure to their own
+volatility WITHOUT communicating that interface publically.
+
+We need a clean and easy way to create private and protected accessors
+in ruby. My goal with this gem, then, is to create such a way, so that
+those who wish to communicate "this variable is undependable and it
+should be kept isolated for now" can do so easily.
