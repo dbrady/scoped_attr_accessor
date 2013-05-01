@@ -25,8 +25,8 @@ module ScopedAttrAccessor
   end
 
   def private_attr_accessor(*names)
-    attr_accessor(*names)
-    names.each {|name| private name; private "#{name}=" }
+    private_attr_reader(*names)
+    private_attr_writer(*names)
   end
 
   def protected_attr_reader(*names)
