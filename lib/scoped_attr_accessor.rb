@@ -30,17 +30,17 @@ module ScopedAttrAccessor
   end
 
   def protected_attr_reader(*names)
-    protected
     attr_reader(*names)
+    names.each {|name| protected name}
   end
 
   def protected_attr_writer(*names)
-    protected
     attr_writer(*names)
+    names.each {|name| protected "#{name}=" }
   end
 
   def protected_attr_accessor(*names)
-    protected
-    attr_accessor(*names)
+    protected_attr_reader(*names)
+    protected_attr_writer(*names)
   end
 end
