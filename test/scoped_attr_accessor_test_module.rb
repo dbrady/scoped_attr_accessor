@@ -120,19 +120,30 @@ module ScopedAttrAccessorTests
   # Happy path test 1. If priv_read1-3 are private, they should be
   # inaccessible
   def test_private_readers_are_in_fact_private
-    lambda { @foo.priv_read1 }.must_raise NoMethodError
-    lambda { @foo.priv_read2 }.must_raise NoMethodError
-    lambda { @foo.priv_read3 }.must_raise NoMethodError
+    -> { @foo.priv_read1 }.must_raise NoMethodError
+    -> { @foo.priv_read2 }.must_raise NoMethodError
+    -> { @foo.priv_read3 }.must_raise NoMethodError
+    -> { @bar.priv_read1 }.must_raise NoMethodError
+    -> { @bar.priv_read2 }.must_raise NoMethodError
+    -> { @bar.priv_read3 }.must_raise NoMethodError
   end
 
   def test_private_writers_are_in_fact_private
-    lambda { @foo.priv_write1 = "OH NOES" }.must_raise NoMethodError
-    lambda { @foo.priv_write2 = "OH NOES" }.must_raise NoMethodError
+    -> { @foo.priv_write1 = "OH NOES" }.must_raise NoMethodError
+    -> { @foo.priv_write2 = "OH NOES" }.must_raise NoMethodError
+    -> { @bar.priv_write1 = "OH NOES" }.must_raise NoMethodError
+    -> { @bar.priv_write2 = "OH NOES" }.must_raise NoMethodError
   end
 
   def test_private_accessors_are_in_fact_private
-    lambda { @foo.priv_access1 = "OH NOES" }.must_raise NoMethodError
-    lambda { @foo.priv_access2 = "OH NOES" }.must_raise NoMethodError
+    -> { @foo.priv_access1 = "OH NOES" }.must_raise NoMethodError
+    -> { @foo.priv_access2 = "OH NOES" }.must_raise NoMethodError
+    -> { @foo.priv_access1 }.must_raise NoMethodError
+    -> { @foo.priv_access2 }.must_raise NoMethodError
+    -> { @bar.priv_access1 = "OH NOES" }.must_raise NoMethodError
+    -> { @bar.priv_access2 = "OH NOES" }.must_raise NoMethodError
+    -> { @bar.priv_access1 }.must_raise NoMethodError
+    -> { @bar.priv_access2 }.must_raise NoMethodError
   end
 
   # Happy path test 2. priv_read1 and priv_read2 may be inaccessible, but are they
@@ -160,9 +171,9 @@ module ScopedAttrAccessorTests
   # Happy path test 3. If prot_read1-3 are protected, they should be
   # inaccessible
   def test_protected_readers_are_in_fact_private
-    lambda { @foo.prot_read1 }.must_raise NoMethodError
-    lambda { @foo.prot_read2 }.must_raise NoMethodError
-    lambda { @foo.prot_read3 }.must_raise NoMethodError
+    -> { @foo.prot_read1 }.must_raise NoMethodError
+    -> { @foo.prot_read2 }.must_raise NoMethodError
+    -> { @foo.prot_read3 }.must_raise NoMethodError
   end
 
   # Happy path test 4. prot_read1 and prot_read2 may be inaccessible, but are they
@@ -188,17 +199,19 @@ module ScopedAttrAccessorTests
   # private scope, after we created protected reader 3, did
   # attr_accessor priv_read3 still get created privately?
   def test_private_readers_AFTER_protected_accessors_are_STILL_private
-    lambda { @foo.peek_at_priv_read3_via_protected_access_BAD }.must_raise NoMethodError
+    -> { @foo.peek_at_priv_read3_via_protected_access_BAD }.must_raise NoMethodError
   end
 
   def test_protected_writers_are_in_fact_protected
-    lambda { @bar.prot_write1 = "OH NOES" }.must_raise NoMethodError
-    lambda { @bar.prot_write2 = "OH NOES" }.must_raise NoMethodError
+    -> { @bar.prot_write1 = "OH NOES" }.must_raise NoMethodError
+    -> { @bar.prot_write2 = "OH NOES" }.must_raise NoMethodError
   end
 
   def test_protected_accessors_are_in_fact_protected
-    lambda { @bar.prot_access1 = "OH NOES" }.must_raise NoMethodError
-    lambda { @bar.prot_access2 = "OH NOES" }.must_raise NoMethodError
+    -> { @bar.prot_access1 }.must_raise NoMethodError
+    -> { @bar.prot_access2 }.must_raise NoMethodError
+    -> { @bar.prot_access1 = "OH NOES" }.must_raise NoMethodError
+    -> { @bar.prot_access2 = "OH NOES" }.must_raise NoMethodError
   end
 
   def test_protected_writers_do_in_fact_work_as_writers
