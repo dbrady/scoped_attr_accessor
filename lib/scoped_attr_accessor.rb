@@ -16,12 +16,12 @@
 module ScopedAttrAccessor
   def private_attr_reader(*names)
     attr_reader(*names)
-    names.each {|name| private name}
+    private(*names)
   end
 
   def private_attr_writer(*names)
     attr_writer(*names)
-    names.each {|name| private "#{name}=" }
+    private(*names.map {|name| "#{name}="})
   end
 
   def private_attr_accessor(*names)
@@ -31,12 +31,12 @@ module ScopedAttrAccessor
 
   def protected_attr_reader(*names)
     attr_reader(*names)
-    names.each {|name| protected name}
+    protected(*names)
   end
 
   def protected_attr_writer(*names)
     attr_writer(*names)
-    names.each {|name| protected "#{name}=" }
+    protected(*names.map {|name| "#{name}="})
   end
 
   def protected_attr_accessor(*names)
