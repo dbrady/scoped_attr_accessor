@@ -25,35 +25,39 @@ Or install it yourself as:
 You can add scoped accessors to a single class (and its children) by
 directly extending `ScopedAttrAccessor` in your class:
 
-    require 'scoped_attr_accessor'
+```ruby
+require 'scoped_attr_accessor'
 
-    class Primate
-      extend ScopedAttrAccessor
-      private_attr_accessor :some_weird_primate_only_counter
-      protected_attr_reader :some_weird_counter
-    end
+class Primate
+  extend ScopedAttrAccessor
+  private_attr_accessor :some_weird_primate_only_counter
+  protected_attr_reader :some_weird_counter
+end
 
-    class Monkey < Primate
-      # Monkey can define its own scoped accessors because Primate
-      # extended the module.
-      private_attr_reader :get_weird_monkey_only_stuff_here
-      private_attr_writer :put_weird_monkey_only_stuff_here
+class Monkey < Primate
+  # Monkey can define its own scoped accessors because Primate
+  # extended the module.
+  private_attr_reader :get_weird_monkey_only_stuff_here
+  private_attr_writer :put_weird_monkey_only_stuff_here
 
-      # use our inherited, protected reader
-      def sufficiently_weird?
-        some_weird_counter > 42
-      end
-    end
+  # use our inherited, protected reader
+  def sufficiently_weird?
+    some_weird_counter > 42
+  end
+end
+```
 
 Alternately, if you require `scoped_attr_accessor/include`, ruby's
 `Object` class will be extended with `ScopedAttrAccessor` making all
 classes able to have protected and private accessors.
 
-    require 'scoped_attr_accessor/include'
+```ruby
+require 'scoped_attr_accessor/include'
 
-    class Primate
-      private_attr_accessor :private_primate_counter
-    end
+class Primate
+  private_attr_accessor :private_primate_counter
+end
+```
 
 ## Avoid Dependency Infection
 
